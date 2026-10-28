@@ -7,6 +7,28 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Autentikasi Google
+
+Login Google menggunakan Laravel Socialite dan kolom `google_id`, `avatar`, serta `password` nullable pada tabel `users`. Login dan registrasi email/password tetap tersedia.
+
+Setelah menjalankan `composer install`, isi konfigurasi berikut di `.env` dengan kredensial OAuth Google bertipe Web application:
+
+```dotenv
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_REDIRECT_URI=http://localhost/auth/google/callback
+```
+
+Sesuaikan domain dan port `GOOGLE_REDIRECT_URI` dengan alamat aplikasi, lalu daftarkan URL yang sama sebagai Authorized redirect URI di Google Cloud. Pastikan `APP_KEY` terisi; untuk instalasi baru, jalankan `php artisan key:generate`. Jalankan `php artisan config:clear` setelah memperbarui konfigurasi.
+
+Akun Google baru dibuat tanpa password dan hanya menerima email yang telah diverifikasi Google. Akun yang sudah ada dicocokkan berdasarkan `google_id`. Email yang sama dengan akun lokal tidak ditautkan otomatis; gunakan login password atau reset password untuk akun tersebut. Profil Google tidak dapat diisi melalui form registrasi biasa.
+
+Akun Google tanpa password dapat membuat password melalui fitur lupa password. Konfigurasi pengiriman email diperlukan untuk mengirim tautan reset. Konfirmasi password mengarahkan akun tersebut ke form permintaan reset sebelum melanjutkan.
+
+Pastikan skema database sudah memiliki kolom Google sebelum mencoba login. Perubahan pada migrasi pembuatan tabel hanya berlaku saat migrasi tersebut dijalankan pertama kali; database yang sudah memakai skema lama membutuhkan migrasi penyesuaian.
+
+Pengujian autentikasi menggunakan respons HTTP Google dan akses database tiruan. Jalankan `vendor/bin/phpunit` dengan `APP_KEY` pengujian yang valid; pengujian tidak menghubungi Google atau mengubah database aplikasi.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

@@ -67,6 +67,16 @@
                             </div>
                         </div>
                     </form>
+
+                    @if (config('services.google.client_id') && config('services.google.client_secret'))
+                        <div class="row mt-3">
+                            <div class="col-md-8 offset-md-4">
+                                <a class="btn btn-outline-primary" href="{{ route('auth.google') }}">
+                                    {{ __('Login dengan Google') }}
+                                </a>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

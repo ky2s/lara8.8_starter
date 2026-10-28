@@ -28,6 +28,18 @@ class ConfirmPasswordController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
+    public function showConfirmForm()
+    {
+        if (auth()->user()->getAuthPassword() === null) {
+            return redirect()->route('password.request')->with(
+                'status',
+                'Akun Google Anda belum memiliki password. Gunakan tautan reset email untuk membuat password sebelum melanjutkan.'
+            );
+        }
+
+        return view('auth.passwords.confirm');
+    }
+
     /**
      * Create a new controller instance.
      *

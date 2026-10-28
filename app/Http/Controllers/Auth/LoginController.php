@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -27,6 +28,16 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
+
+    protected function credentials(Request $request)
+    {
+        // Google-only accounts must create a password before using this form.
+        return array_merge($request->only($this->username(), 'password'), [
+            function ($query) {
+                $query->whereNotNull('password');
+            },
+        ]);
+    }
 
     /**
      * Create a new controller instance.
